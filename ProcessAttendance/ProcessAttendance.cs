@@ -13,6 +13,7 @@ namespace ProcessAttendance
     public static class ProcessAttendance
     {
         private static string cognitiveServiceKey = System.Environment.GetEnvironmentVariable("CognitiveServiceKey");
+        private static string endPoint = System.Environment.GetEnvironmentVariable("EndPoint");
 
         [FunctionName("ProcessAttendance")]
         public static async Task Run([BlobTrigger("takmil/{blobName}", 
@@ -78,7 +79,7 @@ namespace ProcessAttendance
 
         public static Tuple<int, int, int> ProcessPicture(string pictureURL, ILogger log)
         {
-            return FaceDetector.Process(log, pictureURL, cognitiveServiceKey);
+            return FaceDetector.Process(log, pictureURL, cognitiveServiceKey, endPoint);
         }
     }
 
@@ -130,10 +131,11 @@ namespace ProcessAttendance
         string subscriptionkey = "";
         string faceEndpoint = "";
 
-        public MyKeys(string cognitiveServicesKey)
+        public MyKeys(string cognitiveServicesKey, string endPoint)
         {
             //Replace your Azure Face API Subscription key and Faceendpoint location from portal instruction are here 
             this.Subscriptionkey = cognitiveServicesKey;
+            this.FaceEndpoint = endPoint;
 
             // You must use the same region as you used to get your subscription
             // keys. For example, if you got your subscription keys from westus,
@@ -144,7 +146,7 @@ namespace ProcessAttendance
             // use the region. ""https://westcentralus.api.cognitive.microsoft.com";
             // Specify the Azure region
             //this.FaceEndpoint = "https://eastus.api.cognitive.microsoft.com";
-            this.FaceEndpoint = "https://eastasia.api.cognitive.microsoft.com/";
+            //this.FaceEndpoint = "https://eastasia.api.cognitive.microsoft.com/";
         }
 
         public string Subscriptionkey
@@ -198,10 +200,10 @@ namespace ProcessAttendance
         private static int femaleDetected = 0;
         private static int maleDetected = 0;
 
-        public static Tuple<int, int, int> Process(ILogger log, string remoteImageUrl, string cognitiveServicesKey)
+        public static Tuple<int, int, int> Process(ILogger log, string remoteImageUrl, string cognitiveServicesKey, string endPoint)
         {
             log.LogInformation("Welcome to Face API...");
-            MyKeys mykey = new MyKeys(cognitiveServicesKey);
+            MyKeys mykey = new MyKeys(cognitiveServicesKey, endPoint);
             string subscriptionkey = mykey.Subscriptionkey;
             string faceEndpoint = mykey.FaceEndpoint;
             log.LogInformation(string.Format("subsKey {0}", subscriptionkey));
