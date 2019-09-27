@@ -6,6 +6,20 @@ param (
 	[bool]$overwriteResources = $false
 )
 
+if ($subscriptionId -eq "") {
+	Write-Host "Usage: loging.ps1 subscriptionId";
+	Exit;
+}
+
+#Set the active Subscription
+Write-Host "Attempting to Set Active Subscription to $subscriptionId";
+$context = Get-AzSubscription -SubscriptionId $subscriptionId
+if ($context -eq $null) {
+	Write-Host "Incorrect SubscriptionId. Please check the Subscription Id";
+	Exit;
+}
+
+
 if (($resourceGroupName -eq "") -or ($location -eq "") -or ($templateFile -eq "")) {
 	Write-Host "Usage 1: deploy.ps1 resourceGroupName location templateFile subscriptionId";
 	Write-Host "Usage 2: deploy.ps1 resourceGroupName location templateFile subscriptionId overwriteResources ";
@@ -15,10 +29,15 @@ if (($resourceGroupName -eq "") -or ($location -eq "") -or ($templateFile -eq ""
 	Exit;
 }
 
+
+
 if (!(Test-Path $templateFile)) {
 	Write-Host "Template File does not exist. Please provide a valid file";
 	Exit;
 }
+
+
+
 
 
 ############################################################
