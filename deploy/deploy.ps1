@@ -70,13 +70,3 @@ if (($deployment -eq $null)) {
 }
 Write-Host "Resource successfully Deployed.";
 
-############################################################
-# Create Table
-############################################################
-#https://docs.microsoft.com/en-us/powershell/module/az.storage/new-azstoragetable?view=azps-1.8.0
-$TableName = "TakmilTable"
-$StorageAccount = Get-AzureRmStorageAccount -ResourceGroupName $ComputerInventory_ResourceGroup -Name $ComputerInventory_StorageAccountName
-$StorageAccountAccessKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $ComputerInventory_ResourceGroup -Name $ComputerInventory_StorageAccountName).Value[0]
-$context = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
-New-AzureStorageTable -Name $TableName -Context $context
-

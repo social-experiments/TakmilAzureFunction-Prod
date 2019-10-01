@@ -24,13 +24,13 @@
 		hostingPlanName: "[concat(parameters('resourceGroupName'), 'asp')]",
 		cogSvcAccountName: "[concat(parameters('resourceGroupName'), 'cogsvc')]",
 		storageAccountid: "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-		cogSvcAccountid: "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', parameters('cogSvcAccountName'))]"
+		cogSvcAccountid: "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', variables('cogSvcAccountName'))]"
 	},
     "resources": [
         {
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2016-02-01-preview",
-            "name": "[parameters('accounts_takmilea_name')]",
+            "name": "[variables('cogSvcAccountName')]",
             "location": "[parameters('location')]",
             "sku": {
                 "name": "S0"
@@ -197,10 +197,6 @@
                   {
                     "name": "FUNCTIONS_WORKER_RUNTIME",
                     "value": "dotnet"
-                  }
-                  {
-                    "name": "AzureWebJobsCosmos",
-                    "value": "[concat('AccountEndpoint=https://', parameters('databaseAccountName'), '.documents.azure.com:443/;AccountKey=', listKeys(variables('databaseAccountid'),'2016-03-31').primaryMasterKey)]"
                   },
                   {
                     "name": "CognitiveServiceKey",
@@ -208,7 +204,7 @@
                   },
                   {
                     "name": "EndPoint",
-                    "value": "[concat(listKeys(variables('cogSvcAccountid'),'2016-02-01-preview').endpoint)]"
+                    "value": "[concat('https://', replace(toLower(parameters('location')), ' ', ''), '.api.cognitive.microsoft.com/')]"
                   }
                 ]
               }
@@ -223,7 +219,7 @@
                     ],
                     "properties": {
                         "RepoUrl": "https://github.com/social-experiments/TakmilAzureFunction-Prod.git",
-                        "branch": "master",
+                        "branch": "fix_cognitive_bug",
                         "publishRunbook": true,
                         "IsManualIntegration": true
                     }
