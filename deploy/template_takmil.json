@@ -13,19 +13,15 @@
         "storageAccountName": {
             "defaultValue": "tksan",
             "type": "String"
-        },		
-        "subscriptionId": {
-            "defaultValue": "",
-            "type": "String"
         }
-	},
+    },
     "variables": {
-		functionAppName: "[concat(parameters('resourceGroupName'), 'func')]",
-		hostingPlanName: "[concat(parameters('resourceGroupName'), 'asp')]",
-		cogSvcAccountName: "[concat(parameters('resourceGroupName'), 'cogsvc')]",
-		storageAccountid: "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
-		cogSvcAccountid: "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', variables('cogSvcAccountName'))]"
-	},
+        "functionAppName": "[concat(parameters('resourceGroupName'), 'func')]",
+        "hostingPlanName": "[concat(parameters('resourceGroupName'), 'asp')]",
+        "cogSvcAccountName": "[concat(parameters('resourceGroupName'), 'cogsvc')]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
+        "cogSvcAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', variables('cogSvcAccountName'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.CognitiveServices/accounts",
@@ -36,7 +32,8 @@
                 "name": "S0"
             },
             "kind": "CognitiveServices",
-            "properties": {}
+            "properties": {
+            }
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -51,8 +48,10 @@
             "properties": {
                 "networkAcls": {
                     "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
+                    "virtualNetworkRules": [
+                    ],
+                    "ipRules": [
+                    ],
                     "defaultAction": "Allow"
                 },
                 "supportsHttpsTrafficOnly": true,
@@ -79,7 +78,8 @@
             ],
             "properties": {
                 "cors": {
-                    "corsRules": []
+                    "corsRules": [
+                    ]
                 },
                 "deleteRetentionPolicy": {
                     "enabled": false
@@ -174,40 +174,40 @@
             "location": "[parameters('location')]",
             "kind": "functionapp",
             "dependsOn": [
-              "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-              "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
             ],
             "properties": {
-              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
-              "siteConfig": {
-				"alwaysOn": true,
-                "appSettings": [
-                  {
-                    "name": "AzureWebJobsDashboard",
-                    "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1, ';EndpointSuffix=core.windows.net')]"
-                  },
-                  {
-                    "name": "AzureWebJobsStorage",
-                    "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1, ';EndpointSuffix=core.windows.net')]"
-                  },
-                  {
-                    "name": "FUNCTIONS_EXTENSION_VERSION",
-                    "value": "~2"
-                  },
-                  {
-                    "name": "FUNCTIONS_WORKER_RUNTIME",
-                    "value": "dotnet"
-                  },
-                  {
-                    "name": "CognitiveServiceKey",
-                    "value": "[concat(listKeys(variables('cogSvcAccountid'),'2016-02-01-preview').key1)]"
-                  },
-                  {
-                    "name": "EndPoint",
-                    "value": "[concat('https://', replace(toLower(parameters('location')), ' ', ''), '.api.cognitive.microsoft.com/')]"
-                  }
-                ]
-              }
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "siteConfig": {
+                    "alwaysOn": true,
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1, ';EndpointSuffix=core.windows.net')]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1, ';EndpointSuffix=core.windows.net')]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "dotnet"
+                        },
+                        {
+                            "name": "CognitiveServiceKey",
+                            "value": "[concat(listKeys(variables('cogSvcAccountid'),'2016-02-01-preview').key1)]"
+                        },
+                        {
+                            "name": "EndPoint",
+                            "value": "[concat('https://', replace(toLower(parameters('location')), ' ', ''), '.api.cognitive.microsoft.com/')]"
+                        }
+                    ]
+                }
             },
             "resources": [
                 {
@@ -215,17 +215,18 @@
                     "name": "web",
                     "type": "sourcecontrols",
                     "dependsOn": [
-                      "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]"
+                        "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]"
                     ],
                     "properties": {
                         "RepoUrl": "https://github.com/social-experiments/TakmilAzureFunction-Prod.git",
-                        "branch": "fix_cognitive_bug",
+                        "branch": "master",
                         "publishRunbook": true,
                         "IsManualIntegration": true
                     }
-               }
+                }
             ]
         }
     ],
-    "outputs": {}
+    "outputs": {
+    }
 }

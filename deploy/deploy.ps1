@@ -69,7 +69,6 @@ $parameterObject = @{
 	"resourceGroupName" = $trimmedResourceGroupName
 	"location" = $location
 	"storageAccountName" = $storageAccountName
-	"subscriptionId" = $subscriptionId
 }
 
 ############################################################
