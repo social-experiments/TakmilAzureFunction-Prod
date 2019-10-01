@@ -1,17 +1,16 @@
 param (
     [string]$resourceGroupName,
     [string]$location,
-	[string]$templateFile,
 	[string]$subscriptionId,	
 	[bool]$overwriteResources = $false
 )
 
-if (($resourceGroupName -eq "") -or ($location -eq "") -or ($templateFile -eq "")) {
-	Write-Host "Usage 1: deploy.ps1 resourceGroupName location templateFile subscriptionId";
-	Write-Host "Usage 2: deploy.ps1 resourceGroupName location templateFile subscriptionId overwriteResources ";
-	Write-Host "Note 1: overwriteResources is a boolean value - allowed values $true / $false ";
-	Write-Host "Example 1: deploy.ps1 socexp 'West US 2' C:\template.json 88888888-3333-2222-1111-000000000000 ";
-	Write-Host "Example 2: deploy.ps1 socexp 'West US 2' C:\template.json 88888888-3333-2222-1111-000000000000 true ";
+$templateFile = "template_takmil.json"
+
+if (($resourceGroupName -eq "") -or ($location -eq "") -or ($subscriptionId -eq "")) {
+	Write-Host "Usage: deploy.ps1 subscriptionId resourceGroupName location overwriteResources ";
+	Write-Host "Note: overwriteResources is a boolean value - allowed values $true/$false ";
+	Write-Host "Example: 88888888-3333-2222-1111-000000000000 deploy.ps1 socexp 'West US 2' C:\template.json $true ";
 	Exit;
 }
 
@@ -20,6 +19,20 @@ if (!(Test-Path $templateFile)) {
 	Exit;
 }
 
+#Login Prompt
+Write-Host "Sign-In with Azure Credentials";
+Connect-AzAccount | Out-Null
+
+#Set the active Subscription
+Write-Host "Attempting to Set Active Subscription to $subscriptionId";
+$context = Get-AzSubscription -SubscriptionId $subscriptionId
+if ($context -eq $null) {
+	Write-Host "Incorrect SubscriptionId. Please check the Subscription Id";
+	Exit;
+}
+
+Set-AzContext $context  
+Write-Host "Successfully Set Active Subscription to $subscriptionId";
 
 ############################################################
 #Resource Names
