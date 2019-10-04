@@ -82,19 +82,4 @@ namespace ProcessAttendance
             return FaceDetector.Process(log, pictureURL, cognitiveServiceKey, endPoint);
         }
     }
-
-
-
-    
-
-    
-
-    
-
-    
-
-
-
-
-
 }
