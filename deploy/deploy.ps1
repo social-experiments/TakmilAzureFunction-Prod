@@ -1,7 +1,7 @@
 param (
+	[string]$subscriptionId,
     [string]$resourceGroupName,
     [string]$location,
-	[string]$subscriptionId,	
 	[bool]$overwriteResources = $false
 )
 
