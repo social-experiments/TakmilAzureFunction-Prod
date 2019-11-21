@@ -16,7 +16,7 @@ namespace ProcessAttendance
         private static string endPoint = System.Environment.GetEnvironmentVariable("EndPoint");
 
         [FunctionName("ProcessAttendance")]
-        public static async Task Run([BlobTrigger("takmil/{blobName}", 
+        public static async Task Run([BlobTrigger("takmiltraining/{blobName}", 
             Connection = "AzureWebJobsStorage")]Stream inputBlob, string blobName,
             [Table("TakmilTable")] ICollector<ConnectionLog> outputTable,
             ILogger log)
