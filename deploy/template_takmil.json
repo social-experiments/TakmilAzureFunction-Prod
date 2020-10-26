@@ -219,7 +219,7 @@
                     ],
                     "properties": {
                         "RepoUrl": "https://github.com/social-experiments/TakmilAzureFunction-Prod.git",
-                        "branch": "sarsoma/dotnetcore_version_upgrade",
+                        "branch": "master",
                         "publishRunbook": true,
                         "IsManualIntegration": true
                     }
