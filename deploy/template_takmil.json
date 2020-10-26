@@ -4,15 +4,15 @@
     "parameters": {
         "resourceGroupName": {
             "defaultValue": "takmil",
-            "type": "String"
+            "type": "string"
         },
         "location": {
             "defaultValue": "West US 2",
-            "type": "String"
+            "type": "string"
         },
         "storageAccountName": {
             "defaultValue": "tksan",
-            "type": "String"
+            "type": "string"
         }
     },
     "variables": {
@@ -192,7 +192,7 @@
                         },
                         {
                             "name": "FUNCTIONS_EXTENSION_VERSION",
-                            "value": "~2"
+                            "value": "~3"
                         },
                         {
                             "name": "FUNCTIONS_WORKER_RUNTIME",
@@ -208,7 +208,23 @@
                         }
                     ]
                 }
-            }
+            },
+            "resources": [
+                {
+                    "apiVersion": "2016-08-01",
+                    "name": "web",
+                    "type": "SourceControls",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "https://github.com/social-experiments/TakmilAzureFunction-Prod.git",
+                        "branch": "sarsoma/dotnetcore_version_upgrade",
+                        "publishRunbook": true,
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
         }
     ],
     "outputs": {

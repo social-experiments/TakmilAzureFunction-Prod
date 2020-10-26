@@ -5,7 +5,7 @@ param (
 	[bool]$overwriteResources = $false
 )
 
-$templateFile = "template_azfunc_blobtrigger.json"
+$templateFile = "template_takmil.json"
 
 if (($resourceGroupName -eq "") -or ($location -eq "") -or ($subscriptionId -eq "")) {
 	Write-Host 'Usage: deploy.ps1 subscriptionId resourceGroupName location overwriteResources ';
