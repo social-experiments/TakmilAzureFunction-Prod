@@ -5,12 +5,12 @@ param (
 	[bool]$overwriteResources = $false
 )
 
-$templateFile = "template_takmil.json"
+$templateFile = "template_azfunc_blobtrigger.json"
 
 if (($resourceGroupName -eq "") -or ($location -eq "") -or ($subscriptionId -eq "")) {
 	Write-Host 'Usage: deploy.ps1 subscriptionId resourceGroupName location overwriteResources ';
 	Write-Host 'Note: overwriteResources is a boolean value - allowed values $true/$false ';
-	Write-Host 'Example: 88888888-3333-2222-1111-000000000000 deploy.ps1 socexp "West US 2" $true';
+	Write-Host 'Example: deploy.ps1 88888888-3333-2222-1111-000000000000 socexp "West US 2" $true';
 	Exit;
 }
 
@@ -38,8 +38,8 @@ Write-Host "Successfully Set Active Subscription to $subscriptionId";
 #Resource Names
 ############################################################
 $trimmedResourceGroupName = $resourceGroupName.ToLower().Replace("_", "")
-$deploymentName = $trimmedResourceGroupName + "tk" + "deploy"
-$storageAccountName = $trimmedResourceGroupName + "tk" + "san"
+$deploymentName = $trimmedResourceGroupName + "af" + "deploy"
+$storageAccountName = $trimmedResourceGroupName + "af" + "san"
 
 
 ############################################################
