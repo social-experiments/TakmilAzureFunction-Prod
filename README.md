@@ -38,3 +38,42 @@ This powershell script, prompts the user to login with his Azure Account. After 
 ##### template_takmil.json
 
 This is the template file that encapsulates all the resources that has to be created for the end to end solution. This template creates an app service plan that would cost roughly 50 USD. There is also a azure function setting to allow always on. This results in instantaneous triggers for the azure function.
+
+## Updating the Code
+
+This deployment handles Continuous Integration. Everytime a change is made to the repository, the new changes will be compiled and deployed to the Azure Function.
+To monitor the progress:
+1. Navigate to the Resource Group in Azure Portal
+2. Click on the Function Name
+3. Go to Deployment Section on the Left Side
+4. Click on Deployment Center
+5. This should show all the deployments happened so far with the timestamp.
+6. If recent change is not picked up, click on "Sync" button to deploy the latest changes
+<img src="docs\images\azure_function_deployment.jpg" width="1200" height="600">
+
+## Troubleshooting the function trigger
+
+If there are some manual changes done to the resource group and if it looks like the azure function is not getting triggered, the following should help to troubleshoot this issue.
+
+### Launch Azure Function Page
+1. Navigate to Azure Function
+2. Click Functions->Functions
+3. Click the Function Name "ProcessAttendance"
+<img src="docs\images\azure_function_launch.jpg" width="1200" height="600">
+
+### Set up the Log Panel
+1. Click Code + Test
+2. Click Logs in the Bottom of the Screen
+3. The logs panel will display a message when the trigger happens.
+4. Click Clear to start a new tracing session.
+<img src="docs\images\azure_function_log_setup.jpg" width="1200" height="600">
+
+### Upload the Blob
+1. Go to Azure Storage in this resource group
+2. Navigate to takmil container
+3. Upload a sample json file. This can be a simple text file too for troubleshooting.
+<img src="docs\images\azure_storage_blob_upload.jpg" width="1400" height="400">
+
+### Monitor the logs for trigger events
+The logs panel will display an event if the trigger was successful.
+<img src="docs\images\azure_function_log_monitor.jpg" width="1200" height="700">

@@ -16,7 +16,7 @@ namespace ProcessAttendance
         private static string endPoint = System.Environment.GetEnvironmentVariable("EndPoint");
 
         [FunctionName("ProcessAttendance")]
-        public static async Task Run([BlobTrigger("takmil/{blobName}", 
+        public static async Task Run([BlobTrigger("takmil/{blobName}",
             Connection = "AzureWebJobsStorage")]Stream inputBlob, string blobName,
             [Table("TakmilTable")] ICollector<ConnectionLog> outputTable,
             ILogger log)
@@ -133,7 +133,7 @@ namespace ProcessAttendance
 
         public MyKeys(string cognitiveServicesKey, string endPoint)
         {
-            //Replace your Azure Face API Subscription key and Faceendpoint location from portal instruction are here 
+            //Replace your Azure Face API Subscription key and Faceendpoint location from portal instruction are here
             this.Subscriptionkey = cognitiveServicesKey;
             this.FaceEndpoint = endPoint;
 
@@ -225,8 +225,8 @@ namespace ProcessAttendance
             return new Tuple<int, int, int>(maleDetected, femaleDetected, totalFaceDetected);
         }
 
-        // It uses the Face service client to detect faces in a remote image, referenced by a URL. 
-        // Note that it uses the faceAttributes field—the DetectedFace objects added to faceList will have the specified attributes (in this case, age and gender)
+        // It uses the Face service client to detect faces in a remote image, referenced by a URL.
+        // Note that it uses the faceAttributes fieldï¿½the DetectedFace objects added to faceList will have the specified attributes (in this case, age and gender)
         private static async Task DetectedRemoteAsync(ILogger log, FaceClient faceClient, string ImageUrl)
         {
             log.LogInformation("Image URL: " + ImageUrl);
@@ -284,9 +284,4 @@ namespace ProcessAttendance
             log.LogInformation(attributes + "\n");
         }
     }
-
-
-
-
-
 }
